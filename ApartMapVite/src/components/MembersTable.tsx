@@ -11,21 +11,16 @@ import {
   Modal,
   Button,
 } from "@mantine/core";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete, MdEdit, MdInfo } from "react-icons/md";
+import { AddMember } from "./AddMember";
 
 import classes from "../styles/TableSelection.module.css";
 
 export function TableSelection({ members }) {
   const [selection, setSelection] = useState(["1"]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
-
-  const toggleRow = (id) =>
-    setSelection((current) =>
-      current.includes(id)
-        ? current.filter((item) => item !== id)
-        : [...current, id]
-    );
+  const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
 
   const toggleAll = () =>
     setSelection((current) =>
@@ -34,34 +29,27 @@ export function TableSelection({ members }) {
 
   const handleViewDetails = (member) => {
     setSelectedMember(member);
-    setIsModalOpen(true);
+    setIsDetailsModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeDetailsModal = () => {
+    setIsDetailsModalOpen(false);
     setSelectedMember(null);
-  };
-
-  const handleAddMember = () => {
-    // Logic to add a new member goes here
   };
 
   const rows = members.map((item) => {
     const selected = selection.includes(item.id);
     const fullAddress = `${item.address_city}, ${item.address_street}  ${item.address_house_num}`;
-    const formattedDateOfBirth = new Date(item.date_of_birth).toLocaleDateString();
-    
+    const formattedDateOfBirth = new Date(
+      item.date_of_birth
+    ).toLocaleDateString();
+
     return (
       <Table.Tr
         key={item.id}
         className={cx({ [classes.rowSelected]: selected })}
       >
-        <Table.Td>
-          <Checkbox
-            checked={selection.includes(item.id)}
-            onChange={() => toggleRow(item.id)}
-          />
-        </Table.Td>
+        <Table.Td />
         <Table.Td>
           <Group gap="sm">
             <Avatar size={26} src={item.avatar} radius={26} />
@@ -77,53 +65,54 @@ export function TableSelection({ members }) {
         <Table.Td>{formattedDateOfBirth}</Table.Td>
         {/* Display delete, edit, and view details icons under the "Actions" column */}
         <Table.Td>
-          <Button
+          <MdInfo
+            size={20}
+            style={{ cursor: "pointer" }}
             onClick={() => handleViewDetails(item)}
-            variant="link"
-            color="gray"
-            style={{ cursor: 'pointer' }}
-          >
-            <div style={{ fontSize: rem(12), lineHeight: 1 }}>
-              Covid19<br />Details
-            </div>
-          </Button>
-          <MdDelete /> <MdEdit />
+          />
+          <MdDelete
+            size={20}
+            style={{ cursor: "pointer" }}
+            onClick={() => console.log("hellp delete")}
+          />
+          <MdEdit
+            size={20}
+            style={{ cursor: "pointer" }}
+            onClick={() => console.log("hellp edit")}
+          />
         </Table.Td>
       </Table.Tr>
     );
   });
 
   return (
-    <div style={{ marginTop: rem(20), marginBottom: rem(20), textAlign: 'center' }}>
+    <div style={{ marginBottom: rem(20), textAlign: "center" }}>
       <h1 style={{ marginBottom: rem(10) }}>Covid19 Management System</h1>
       <Button
         variant="outline"
         color="blue"
         style={{ marginBottom: rem(10) }}
-        onClick={handleAddMember}
+        onClick={() => setIsAddMemberModalOpen(true)}
       >
         + Add Member
       </Button>
       <ScrollArea h={390}>
-        <Table stickyHeader miw={800} verticalSpacing="sm" horizontalSpacing="sm">
+        <Table
+          stickyHeader
+          miw={700}
+          verticalSpacing="sm"
+          horizontalSpacing="sm"
+        >
           <Table.Thead>
             <Table.Tr>
-              <Table.Th style={{ width: rem(60) }}>
-                <Checkbox
-                  onChange={toggleAll}
-                  checked={selection.length === members.length}
-                  indeterminate={
-                    selection.length > 0 && selection.length !== members.length
-                  }
-                />
-              </Table.Th>
-              <Table.Th>Member</Table.Th>
-              <Table.Th>Id</Table.Th>
-              <Table.Th>Phone number</Table.Th>
-              <Table.Th>Cell phone</Table.Th>
-              <Table.Th>Address</Table.Th>
-              <Table.Th>Date Of Birth</Table.Th>
-              <Table.Th>Actions</Table.Th>
+              <Table.Th></Table.Th>
+              <Table.Th style={{ textAlign: "center" }}>Member</Table.Th>
+              <Table.Th style={{ textAlign: "center" }}>Id</Table.Th>
+              <Table.Th style={{ textAlign: "center" }}>Phone number</Table.Th>
+              <Table.Th style={{ textAlign: "center" }}>Cell phone</Table.Th>
+              <Table.Th style={{ textAlign: "center" }}>Address</Table.Th>
+              <Table.Th style={{ textAlign: "center" }}>Date Of Birth</Table.Th>
+              <Table.Th style={{ textAlign: "center" }}>Actions</Table.Th>
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{rows}</Table.Tbody>
@@ -132,12 +121,22 @@ export function TableSelection({ members }) {
       {selectedMember && (
         <Modal
           title="Member Details"
-          opened={isModalOpen}
-          onClose={closeModal}
+          opened={isDetailsModalOpen}
+          onClose={closeDetailsModal}
         >
           {/* Display detailed information about the selected member */}
-         
+
           {/* Add more details as needed */}
+        </Modal>
+      )}
+      {isAddMemberModalOpen && (
+        <Modal
+          title="Add Member"
+          style={{}}
+          opened={isAddMemberModalOpen}
+          onClose={() => setIsAddMemberModalOpen(false)}
+        >
+          <AddMember />
         </Modal>
       )}
     </div>

@@ -19,6 +19,30 @@ export async function lastMonthData(req: Request, res: Response) {
 
     const results = await runQuery(query);
 
+    // results.forEach((x) => {
+    //   x.activity_date = new Date(x.activity_date).toLocaleDateString();
+    // });
+
+    res.json(results);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+}
+
+export async function howManyNotVaccinated(req: Request, res: Response) {
+  try {
+    const query: string = `
+    select count(*) from members_data
+    where
+    1st_vaccination_date is null
+    and 2nd_vaccination_date is null
+    and 3rs_vaccination_date is null
+    and 4th_vaccination_date is null
+    `;
+
+    const results = await runQuery(query);
+
     results.forEach((x) => {
       x.activity_date = new Date(x.activity_date).toLocaleDateString();
     });
