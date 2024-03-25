@@ -1,4 +1,3 @@
-import React from "react";
 import {
   LineChart,
   Line,
@@ -10,7 +9,7 @@ import {
 } from "recharts";
 import { format, subMonths, eachDayOfInterval } from "date-fns";
 
-export const LastMonthInfo = ({ lastMonthInfo }: any) => {
+export const LastMonthInfo = ({ lastMonthInfo }) => {
   // Function to generate dates for the last month
   const getLastMonthDates = () => {
     const today = new Date();
@@ -27,6 +26,7 @@ export const LastMonthInfo = ({ lastMonthInfo }: any) => {
 
   // Map over the dates and create an array of objects with date and active_patients_per_day
   const dataForChart = dates.map((date) => {
+    console.log(lastMonthInfo, date);
     const infoForDate = lastMonthInfo.find(
       (info) => info.activity_date === date
     );
@@ -40,11 +40,11 @@ export const LastMonthInfo = ({ lastMonthInfo }: any) => {
 
   return (
     <>
-      <p style={{ paddingTop: "10px" }}>
+      <p style={{ paddingTop: "5px" }}>
         How many active corona patients have there been every day in the last
         month
       </p>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={200}>
         <LineChart
           data={dataForChart}
           margin={{ top: 20, right: 30, left: 20, bottom: 10 }}
@@ -62,6 +62,9 @@ export const LastMonthInfo = ({ lastMonthInfo }: any) => {
           />
         </LineChart>
       </ResponsiveContainer>
+      <p style={{ paddingTop: "5px" }}>
+        How many patients are not vaccinated at all
+      </p>
     </>
   );
 };

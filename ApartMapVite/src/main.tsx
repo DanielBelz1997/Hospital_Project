@@ -4,9 +4,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RootPage } from "./routes/RootPage";
 import { ErrorPage } from "./routes/ErrorPage";
 import { DashboardPage } from "./routes/DashboardPage";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -20,8 +22,6 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
 ]);
-
-const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>

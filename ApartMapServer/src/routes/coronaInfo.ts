@@ -1,8 +1,8 @@
 import express from "express";
 const router = express.Router();
-import { lastMonthData } from "../controllers/coronaInfo";
+import { coronaInfo } from "../controllers/coronaInfo";
 
-router.get("/", lastMonthData);
+router.get("/", coronaInfo);
 
 // hello
 module.exports = router;

@@ -1,10 +1,11 @@
 // @ts-nocheck
 import { Request, Response } from "express";
 import { runQuery } from "../help_functions/connectionTypes";
+import { parse, format } from "date-fns";
 
-export async function lastMonthData(req: Request, res: Response) {
+export async function coronaInfo(req: Request, res: Response) {
   try {
-    const query: string = `
+    const lastMonthDataQuery: string = `
     SELECT COUNT(*) AS active_patients_per_day, activity_date
     FROM (
         SELECT activity_date
@@ -17,22 +18,7 @@ export async function lastMonthData(req: Request, res: Response) {
     GROUP BY activity_date;
     `;
 
-    const results = await runQuery(query);
-
-    // results.forEach((x) => {
-    //   x.activity_date = new Date(x.activity_date).toLocaleDateString();
-    // });
-
-    res.json(results);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error });
-  }
-}
-
-export async function howManyNotVaccinated(req: Request, res: Response) {
-  try {
-    const query: string = `
+    const howManyNotVaccinatedQuery: string = `
     select count(*) from members_data
     where
     1st_vaccination_date is null
@@ -41,13 +27,28 @@ export async function howManyNotVaccinated(req: Request, res: Response) {
     and 4th_vaccination_date is null
     `;
 
-    const results = await runQuery(query);
+    const lastMonthDataResults = await runQuery(lastMonthDataQuery);
+    const howManyNotVaccinatedResults = await runQuery(
+      howManyNotVaccinatedQuery
+    );
 
-    results.forEach((x) => {
-      x.activity_date = new Date(x.activity_date).toLocaleDateString();
+    for (const oneDayInfo of lastMonthDataResults) {
+      const inputDateString = new Date(
+        oneDayInfo.activity_date
+      ).toLocaleDateString();
+
+      const parsedDate = parse(inputDateString, "d/M/yyyy", new Date());
+      const formattedDate = format(parsedDate, "yyyy-dd-MM");
+
+      oneDayInfo.activity_date = formattedDate;
+    }
+
+    console.log(lastMonthDataResults);
+
+    res.json({
+      lastMonthDataResults: lastMonthDataResults,
+      howManyNotVaccinatedResults: howManyNotVaccinatedResults[0]["count(*)"],
     });
-
-    res.json(results);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error });
