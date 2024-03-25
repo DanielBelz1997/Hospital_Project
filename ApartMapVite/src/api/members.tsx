@@ -4,3 +4,8 @@ export const retrieveMembers = async () => {
   const response = await axios.get("http://127.0.0.1:3302/api/members/");
   return response.data;
 };
+
+export const retrieveMemberDetails = async () => {
+  const response = await axios.get("http://127.0.0.1:3302/api/members/Details");
+  return response.data;
+};

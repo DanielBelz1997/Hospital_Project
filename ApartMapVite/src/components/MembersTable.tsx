@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 import { MdDelete, MdEdit, MdInfo } from "react-icons/md";
 import { AddMember } from "./AddMember";
+import { retrieveMemberDetails } from "../api/members";
 
 import classes from "../styles/TableSelection.module.css";
 
@@ -21,6 +22,19 @@ export function TableSelection({ members }) {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
   const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
+
+  const {
+    data: memberDetails,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["memberDetails"],
+    queryFn: retrieveMemberDetails,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
 
   const toggleAll = () =>
     setSelection((current) =>
@@ -123,11 +137,7 @@ export function TableSelection({ members }) {
           title="Member Details"
           opened={isDetailsModalOpen}
           onClose={closeDetailsModal}
-        >
-          {/* Display detailed information about the selected member */}
-
-          {/* Add more details as needed */}
-        </Modal>
+        ></Modal>
       )}
       {isAddMemberModalOpen && (
         <Modal
