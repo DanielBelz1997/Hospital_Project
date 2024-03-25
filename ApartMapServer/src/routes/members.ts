@@ -1,8 +1,9 @@
 import express from "express";
 const router = express.Router();
-import { getMembers } from "../controllers/members";
+import { getMembers, getMembersDetails } from "../controllers/members";
 
 router.get("/", getMembers);
 
-// hello
+router.get("/Details", getMembersDetails);
+
 module.exports = router;

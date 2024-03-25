@@ -71,8 +71,6 @@ export function AddMember() {
           {...(register("exampleRequired"), { required: true })}
           style={{ marginBottom: "4vh" }}
         />
-        {/* errors will return when field validation fails  */}
-        {/* {errors.exampleRequired && <span>This field is required</span>} */}
 
         <input type="submit" value={"Submit"} />
       </div>
