@@ -1,9 +1,15 @@
 import express from "express";
 const router = express.Router();
-import { getMembers, getMembersDetails } from "../controllers/members";
+import {
+  getMembersDetails,
+  addMember,
+  deleteMember,
+} from "../controllers/members";
 
-router.get("/", getMembers);
+router.get("/", getMembersDetails);
 
-router.get("/Details", getMembersDetails);
+router.post("/", addMember);
+
+router.delete("/:memberId", deleteMember);
 
 module.exports = router;

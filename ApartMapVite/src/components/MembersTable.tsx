@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 import { MdDelete, MdEdit, MdInfo } from "react-icons/md";
 import { AddMember } from "./AddMember";
-import { retrieveMemberDetails } from "../api/members";
+import { useDeleteMember } from "../hooks/useDeleteMember";
 
 import classes from "../styles/TableSelection.module.css";
 
@@ -22,24 +22,7 @@ export function TableSelection({ members }) {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
   const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
-
-  const {
-    data: memberDetails,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["memberDetails"],
-    queryFn: retrieveMemberDetails,
-  });
-
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error: {error.message}</div>;
-
-  const toggleAll = () =>
-    setSelection((current) =>
-      current.length === members.length ? [] : members.map((item) => item.id)
-    );
+  const deleteMemberMutation = useDeleteMember();
 
   const handleViewDetails = (member) => {
     setSelectedMember(member);
@@ -51,6 +34,10 @@ export function TableSelection({ members }) {
     setSelectedMember(null);
   };
 
+  const handleDelete = (id) => {
+    deleteMemberMutation.mutate(id);
+  };
+
   const rows = members.map((item) => {
     const selected = selection.includes(item.id);
     const fullAddress = `${item.address_city}, ${item.address_street}  ${item.address_house_num}`;
@@ -60,7 +47,7 @@ export function TableSelection({ members }) {
 
     return (
       <Table.Tr
-        key={item.id}
+        key={item.id_serial}
         className={cx({ [classes.rowSelected]: selected })}
       >
         <Table.Td />
@@ -87,7 +74,7 @@ export function TableSelection({ members }) {
           <MdDelete
             size={20}
             style={{ cursor: "pointer" }}
-            onClick={() => console.log("hellp delete")}
+            onClick={() => handleDelete(item.id)}
           />
           <MdEdit
             size={20}
@@ -137,14 +124,23 @@ export function TableSelection({ members }) {
           title="Member Details"
           opened={isDetailsModalOpen}
           onClose={closeDetailsModal}
-        ></Modal>
+        >
+          {selectedMember &&
+            Object.entries(selectedMember).map(([key, value]) => (
+              <Text style={{ textAlign: "center" }} key={key}>{`${key}:   ${
+                key.includes("date")
+                  ? new Date(value).toLocaleDateString()
+                  : value
+              }`}</Text>
+            ))}
+        </Modal>
       )}
       {isAddMemberModalOpen && (
         <Modal
           title="Add Member"
-          style={{}}
           opened={isAddMemberModalOpen}
           onClose={() => setIsAddMemberModalOpen(false)}
+          size="55%"
         >
           <AddMember />
         </Modal>

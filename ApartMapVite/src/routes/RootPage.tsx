@@ -1,5 +1,5 @@
 import { TableSelection } from "../components/MembersTable";
-import { retrieveMembers } from "../api/members";
+import { retrieveMemberDetails } from "../api/members";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@mantine/core";
 import { Link } from "react-router-dom";
@@ -11,8 +11,8 @@ export function RootPage() {
     isError,
     error,
   } = useQuery({
-    queryKey: ["members"],
-    queryFn: retrieveMembers,
+    queryKey: ["membersDetalis"],
+    queryFn: retrieveMemberDetails,
   });
 
   if (isLoading) return <div>Loading...</div>;
