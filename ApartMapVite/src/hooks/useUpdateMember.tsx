@@ -1,18 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AddMember } from "../api/members";
+import { UpdateMember } from "../api/members";
 // import { toast } from "react-toastify";
 
-export const useAddMember = () => {
+export const useUpdateMember = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: AddMember,
+    mutationFn: UpdateMember,
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["membersDetalis"] });
-      console.log("added!");
+      console.log("updated!");
     },
     onError() {
-      console.log("error in deleting the member");
+      console.log("error in updating the member");
     },
   });
 };

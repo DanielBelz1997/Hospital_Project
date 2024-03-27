@@ -11,31 +11,26 @@ type Inputs = {
   address_house_num: number;
   date_of_birth: string | null;
   id_serial: number;
-  "1st_vaccination_date": string;
-  "2nd_vaccination_date": string;
-  "3rs_vaccination_date": string;
-  "4th_vaccination_date": string;
+  first_vaccination_date: string;
+  second_vaccination_date: string;
+  third_vaccination_date: string;
+  forth_vaccination_date: string;
   vaccine_manufacturer: string;
   positive_test_date: string | null;
   recovery_date: string | null;
 };
 
 export function AddMember() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
 
   const addMemberMutation = useAddMember();
 
   const onSubmit: SubmitHandler<Inputs> = async (memberData) => {
     console.log(memberData);
-    addMemberMutation.mutate(memberData); // Trigger the mutation to create a new member
+    addMemberMutation.mutate(memberData);
   };
 
   return (
-    /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
     <form onSubmit={handleSubmit(onSubmit)}>
       <div
         style={{
@@ -94,38 +89,33 @@ export function AddMember() {
           {...register("date_of_birth", { required: true })}
           style={{ marginBottom: "4vh" }}
         />
+        <p>1st Vaccination date</p>
         <input
-          placeholder="serial ID"
-          type="number"
-          {...register("id_serial", { required: true })}
+          placeholder="first vaccination date"
+          type="datetime-local"
+          {...register("first_vaccination_date", { required: true })}
           style={{ marginBottom: "4vh" }}
         />
-        1st Vaccination date
+        <p>2nd Vaccination date</p>
         <input
-          placeholder="1st Vaccination date"
+          placeholder="second vaccination date"
           type="datetime-local"
-          {...register("1st_vaccination_date", { required: true })}
+          {...register("second_vaccination_date", { required: true })}
           style={{ marginBottom: "4vh" }}
         />
-        2nd Vaccination date
+        <p>3rd Vaccination date</p>
         <input
-          placeholder="2nd Vaccination date"
+          placeholder="third vaccination date"
           type="datetime-local"
-          {...register("2nd_vaccination_date", { required: true })}
-          style={{ marginBottom: "4vh" }}
+          {...register("third_vaccination_date", { required: true })}
+          style={{ marginBottom: "6vh" }}
         />
-        <p></p>3rd Vaccination date
+        <p></p>
+        <span>4th Vaccination date</span>
         <input
-          placeholder="3rd Vaccination date"
+          placeholder="forth vaccination date"
           type="datetime-local"
-          {...register("3rs_vaccination_date", { required: true })}
-          style={{ marginBottom: "4vh" }}
-        />
-        4th Vaccination date
-        <input
-          placeholder="4th Vaccination date"
-          type="datetime-local"
-          {...register("4th_vaccination_date", { required: true })}
+          {...register("forth_vaccination_date", { required: true })}
           style={{ marginBottom: "4vh" }}
         />
         <input
@@ -134,21 +124,25 @@ export function AddMember() {
           {...register("vaccine_manufacturer", { required: true })}
           style={{ marginBottom: "4vh" }}
         />
-        Positive test date
+        <p>Positive test date</p>
         <input
           placeholder="Positive test date"
           type="datetime-local"
           {...register("positive_test_date")}
           style={{ marginBottom: "4vh" }}
         />
-        Recovery date
+        <p>Recovery date</p>
         <input
           placeholder="Recovery date"
           type="datetime-local"
           {...register("recovery_date")}
           style={{ marginBottom: "4vh" }}
         />
-        <input type="submit" value="Submit" style={{ marginTop: "2vh" }} />
+        <input
+          type="submit"
+          value="Submit"
+          style={{ marginTop: "2vh", width: "30vh", height: "10vh" }}
+        />
       </div>
     </form>
   );

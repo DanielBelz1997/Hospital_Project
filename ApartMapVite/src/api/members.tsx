@@ -5,8 +5,16 @@ export const retrieveMemberDetails = async () => {
   return response.data;
 };
 
-export const AddMember = async (memberData: void) => {
+export const AddMember = async (memberData: unknown) => {
   const response = await axios.post(
+    `http://127.0.0.1:3302/api/members/`,
+    memberData
+  );
+  return response.data;
+};
+
+export const UpdateMember = async (memberData: unknown) => {
+  const response = await axios.patch(
     `http://127.0.0.1:3302/api/members/`,
     memberData
   );

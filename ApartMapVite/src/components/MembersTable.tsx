@@ -16,10 +16,12 @@ import { AddMember } from "./AddMember";
 import { useDeleteMember } from "../hooks/useDeleteMember";
 
 import classes from "../styles/TableSelection.module.css";
+import { UpdateMember } from "./UpdateMember";
 
 export function TableSelection({ members }) {
   const [selection, setSelection] = useState(["1"]);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateDetailsModalOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
   const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
   const deleteMemberMutation = useDeleteMember();
@@ -29,8 +31,19 @@ export function TableSelection({ members }) {
     setIsDetailsModalOpen(true);
   };
 
+  const handleUpdateMember = (member) => {
+    console.log(member);
+    setSelectedMember(member);
+    setIsUpdateDetailsModalOpen(true);
+  };
+
   const closeDetailsModal = () => {
     setIsDetailsModalOpen(false);
+    setSelectedMember(null);
+  };
+
+  const closeUpdateModal = () => {
+    setIsUpdateDetailsModalOpen(false);
     setSelectedMember(null);
   };
 
@@ -79,7 +92,7 @@ export function TableSelection({ members }) {
           <MdEdit
             size={20}
             style={{ cursor: "pointer" }}
-            onClick={() => console.log("hellp edit")}
+            onClick={() => handleUpdateMember(item)}
           />
         </Table.Td>
       </Table.Tr>
@@ -143,6 +156,16 @@ export function TableSelection({ members }) {
           size="55%"
         >
           <AddMember />
+        </Modal>
+      )}
+      {isUpdateModalOpen && (
+        <Modal
+          title="Update Member"
+          opened={isUpdateModalOpen}
+          onClose={closeUpdateModal}
+          size="37%"
+        >
+          <UpdateMember selectedMember={selectedMember} />
         </Modal>
       )}
     </div>
