@@ -12,7 +12,7 @@ export async function coronaInfo(req: Request, res: Response) {
         FROM (
             SELECT COALESCE(first_vaccination_date, second_vaccination_date, third_vaccination_date, forth_vaccination_date, positive_test_date, recovery_date) AS activity_date
             FROM members_data
-            WHERE COALESCE(first_vaccination_date, second_vaccination_date, third_vaccination_date, forth_vaccination_date, positive_test_date, recovery_date) BETWEEN LAST_DAY(CURDATE() - INTERVAL 1 MONTH) + INTERVAL 1 DAY AND LAST_DAY(CURDATE())
+            WHERE COALESCE(first_vaccination_date, second_vaccination_date, third_vaccination_date, forth_vaccination_date, positive_test_date, recovery_date) BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) + INTERVAL 1 DAY AND LAST_DAY(CURDATE())
         ) AS activity_dates
     ) AS activity_count
     GROUP BY activity_date;

@@ -17,6 +17,7 @@ import { useDeleteMember } from "../hooks/useDeleteMember";
 
 import classes from "../styles/TableSelection.module.css";
 import { UpdateMember } from "./UpdateMember";
+import { ToastContainer } from "react-toastify";
 
 export function TableSelection({ members }) {
   const [selection, setSelection] = useState(["1"]);
@@ -32,7 +33,6 @@ export function TableSelection({ members }) {
   };
 
   const handleUpdateMember = (member) => {
-    console.log(member);
     setSelectedMember(member);
     setIsUpdateDetailsModalOpen(true);
   };
@@ -101,6 +101,7 @@ export function TableSelection({ members }) {
 
   return (
     <div style={{ marginBottom: rem(20), textAlign: "center" }}>
+      <ToastContainer />
       <h1 style={{ marginBottom: rem(10) }}>Covid19 Management System</h1>
       <Button
         variant="outline"

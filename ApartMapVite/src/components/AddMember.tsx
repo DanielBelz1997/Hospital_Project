@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAddMember } from "../hooks/useAddMember";
+import { ToastContainer } from "react-toastify";
 
 type Inputs = {
   id_official: string;
@@ -40,6 +41,7 @@ export function AddMember() {
           maxWidth: "1000px",
         }}
       >
+        <ToastContainer />
         <input
           placeholder="goverment ID"
           type="text"

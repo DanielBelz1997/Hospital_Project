@@ -7,12 +7,12 @@ export const useDeleteMember = () => {
 
   return useMutation({
     mutationFn: deleteMember,
-    onSuccess() {
+    onSuccess(res) {
       queryClient.invalidateQueries({ queryKey: ["membersDetalis"] });
-      console.log("deleted!");
+      toast.success(res.message);
     },
     onError() {
-      toast("error in deleting the member");
+      toast.error("error in deleting the member");
     },
   });
 };

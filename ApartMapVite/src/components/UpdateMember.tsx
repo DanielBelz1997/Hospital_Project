@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useUpdateMember } from "../hooks/useUpdateMember";
+import { ToastContainer } from "react-toastify";
 
 type Inputs = {
   id_official: string;
@@ -21,11 +22,7 @@ type Inputs = {
 };
 
 export function UpdateMember({ selectedMember }) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
 
   const updateMemberMutation = useUpdateMember();
 
@@ -44,26 +41,27 @@ export function UpdateMember({ selectedMember }) {
           maxWidth: "1000px",
         }}
       >
+        <ToastContainer />
         <input
           placeholder="goverment ID"
           type="text"
           defaultValue={selectedMember.id_official}
           {...register("id_official", { required: true })}
-          style={{ marginBottom: "4vh", marginTop: "2vh" }}
+          style={{ marginBottom: "2vh", marginTop: "2vh" }}
         />
         <input
           placeholder="FullName"
           type="text"
           defaultValue={selectedMember.name}
           {...register("name", { required: true })}
-          style={{ marginBottom: "4vh" }}
+          style={{ marginBottom: "2vh" }}
         />
         <input
           placeholder="Main phone"
           type="text"
           defaultValue={selectedMember.phone_number}
           {...register("phone_number", { required: true })}
-          style={{ marginBottom: "4vh" }}
+          style={{ marginBottom: "2vh" }}
         />
         <input
           placeholder="Cellphone"
@@ -93,6 +91,76 @@ export function UpdateMember({ selectedMember }) {
           {...register("address_house_num", { required: true })}
           style={{ marginBottom: "2vh" }}
         />
+        {selectedMember.first_vaccination_date && (
+          <>
+            <p>1st Vaccination date</p>
+            <input
+              placeholder="first vaccination date"
+              type="datetime-local"
+              {...register("first_vaccination_date", { required: true })}
+              style={{ marginBottom: "2vh" }}
+            />
+          </>
+        )}
+        {selectedMember.second_vaccination_date && (
+          <>
+            <p>2nd Vaccination date</p>
+            <input
+              placeholder="second vaccination date"
+              type="datetime-local"
+              {...register("second_vaccination_date", { required: true })}
+              style={{ marginBottom: "2vh" }}
+            />
+          </>
+        )}
+        {selectedMember.third_vaccination_date && (
+          <>
+            <p>3rd Vaccination date</p>
+            <input
+              placeholder="third vaccination date"
+              type="datetime-local"
+              {...register("third_vaccination_date", { required: true })}
+              style={{ marginBottom: "2vh" }}
+            />
+          </>
+        )}
+        {selectedMember.forth_vaccination_date && (
+          <>
+            <p>4th Vaccination date</p>
+            <input
+              placeholder="forth vaccination date"
+              type="datetime-local"
+              {...register("forth_vaccination_date", { required: true })}
+              style={{ marginBottom: "2vh" }}
+            />
+          </>
+        )}
+        <input
+          placeholder="Vaccine manufacturer"
+          type="text"
+          defaultValue={selectedMember.vaccine_manufacturer}
+          {...register("vaccine_manufacturer", { required: true })}
+          style={{ marginBottom: "2vh" }}
+        />
+        <p>Positive test date</p>
+        <input
+          placeholder="Positive test date"
+          type="datetime-local"
+          defaultValue={selectedMember.positive_test_date}
+          {...register("positive_test_date")}
+          style={{ marginBottom: "2vh" }}
+        />
+        {selectedMember.recovery_date && (
+          <>
+            <p>Recovery date</p>
+            <input
+              placeholder="Recovery date"
+              type="datetime-local"
+              {...register("recovery_date")}
+              style={{ marginBottom: "2vh" }}
+            />
+          </>
+        )}
         <input
           type="submit"
           value="Update"

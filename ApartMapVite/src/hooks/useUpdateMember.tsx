@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UpdateMember } from "../api/members";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export const useUpdateMember = () => {
   const queryClient = useQueryClient();
@@ -9,10 +9,10 @@ export const useUpdateMember = () => {
     mutationFn: UpdateMember,
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["membersDetalis"] });
-      console.log("updated!");
+      toast.success("updated!");
     },
     onError() {
-      console.log("error in updating the member");
+      toast.error("error in updating the member");
     },
   });
 };

@@ -7,6 +7,7 @@ import { DashboardPage } from "./routes/DashboardPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient();
 

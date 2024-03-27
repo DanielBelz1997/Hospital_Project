@@ -5,12 +5,13 @@ import { runQuery } from "../help_functions/connectionTypes";
 export async function getMembersDetails(req: Request, res: Response) {
   try {
     const query: string = `
-    SELECT * FROM members_data
-    LEFT JOIN members
+    SELECT * FROM members
+    INNER JOIN members_data
     ON members_data.id_member = members.id;
     `;
 
     const results = await runQuery(query);
+    console.log(results);
 
     res.json(results);
   } catch (error) {
