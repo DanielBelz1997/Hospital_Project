@@ -10,9 +10,9 @@ export async function coronaInfo(req: Request, res: Response) {
     FROM (
         SELECT activity_date
         FROM (
-            SELECT COALESCE(1st_vaccination_date, 2nd_vaccination_date, 3rs_vaccination_date, 4th_vaccination_date, positive_test_date, recovery_date) AS activity_date
+            SELECT COALESCE(first_vaccination_date, second_vaccination_date, third_vaccination_date, forth_vaccination_date, positive_test_date, recovery_date) AS activity_date
             FROM members_data
-            WHERE COALESCE(1st_vaccination_date, 2nd_vaccination_date, 3rs_vaccination_date, 4th_vaccination_date, positive_test_date, recovery_date) BETWEEN LAST_DAY(CURDATE() - INTERVAL 1 MONTH) + INTERVAL 1 DAY AND LAST_DAY(CURDATE())
+            WHERE COALESCE(first_vaccination_date, second_vaccination_date, third_vaccination_date, forth_vaccination_date, positive_test_date, recovery_date) BETWEEN LAST_DAY(CURDATE() - INTERVAL 1 MONTH) + INTERVAL 1 DAY AND LAST_DAY(CURDATE())
         ) AS activity_dates
     ) AS activity_count
     GROUP BY activity_date;
@@ -21,10 +21,10 @@ export async function coronaInfo(req: Request, res: Response) {
     const howManyNotVaccinatedQuery: string = `
     select count(*) from members_data
     where
-    1st_vaccination_date is null
-    and 2nd_vaccination_date is null
-    and 3rs_vaccination_date is null
-    and 4th_vaccination_date is null
+    first_vaccination_date is null
+    and second_vaccination_date is null
+    and third_vaccination_date is null
+    and forth_vaccination_date is null
     `;
 
     const lastMonthDataResults = await runQuery(lastMonthDataQuery);
