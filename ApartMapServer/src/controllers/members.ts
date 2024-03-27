@@ -12,8 +12,6 @@ export async function getMembersDetails(req: Request, res: Response) {
 
     const results = await runQuery(query);
 
-    console.log(results);
-
     res.json(results);
   } catch (error) {
     console.log(error);
@@ -142,7 +140,6 @@ export async function addMember(req: Request, res: Response) {
     res.json({ message: "the member has been added!" });
   } catch (error) {
     if (memberInd === 1) {
-      console.log("heheh");
       await runQuery(
         "DELETE FROM members where id = ?",
         idResult[0].inserted_id
