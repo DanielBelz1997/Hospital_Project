@@ -11,6 +11,7 @@ export async function getMembersDetails(req: Request, res: Response) {
     `;
 
     const results = await runQuery(query);
+
     console.log(results);
 
     res.json(results);
@@ -21,8 +22,10 @@ export async function getMembersDetails(req: Request, res: Response) {
 }
 
 export async function addMember(req: Request, res: Response) {
+  let memberInd = 0;
+  let idResult;
   try {
-    const {
+    let {
       id_official,
       name,
       phone_number,
@@ -40,15 +43,43 @@ export async function addMember(req: Request, res: Response) {
       recovery_date,
     } = req.body;
 
+    !first_vaccination_date
+      ? (first_vaccination_date = null)
+      : first_vaccination_date;
+    !second_vaccination_date
+      ? (second_vaccination_date = null)
+      : second_vaccination_date;
+    !third_vaccination_date
+      ? (third_vaccination_date = null)
+      : third_vaccination_date;
+    !forth_vaccination_date
+      ? (forth_vaccination_date = null)
+      : forth_vaccination_date;
+    !positive_test_date ? (positive_test_date = null) : positive_test_date;
+    !recovery_date ? (recovery_date = null) : recovery_date;
+
     if (
-      new Date(second_vaccination_date) < new Date(first_vaccination_date) ||
-      new Date(third_vaccination_date) < new Date(second_vaccination_date) ||
-      new Date(forth_vaccination_date) < new Date(third_vaccination_date) ||
-      (recovery_date && !positive_test_date)
+      (second_vaccination_date &&
+        first_vaccination_date &&
+        new Date(second_vaccination_date) < new Date(first_vaccination_date)) ||
+      (third_vaccination_date &&
+        second_vaccination_date &&
+        new Date(third_vaccination_date) < new Date(second_vaccination_date)) ||
+      (forth_vaccination_date &&
+        third_vaccination_date &&
+        new Date(forth_vaccination_date) < new Date(third_vaccination_date)) ||
+      (recovery_date && !positive_test_date) ||
+      (vaccine_manufacturer && !first_vaccination_date) ||
+      (!vaccine_manufacturer && first_vaccination_date) ||
+      (forth_vaccination_date &&
+        (!third_vaccination_date ||
+          !second_vaccination_date ||
+          !first_vaccination_date)) ||
+      (third_vaccination_date &&
+        (!second_vaccination_date || !first_vaccination_date)) ||
+      (second_vaccination_date && !first_vaccination_date)
     ) {
-      throw new Error(
-        "there is an issue with the details. check and try again"
-      );
+      return res.status(418).json({ message: "logic error" });
     }
     const insertMemberValues = [
       id_official,
@@ -77,8 +108,9 @@ export async function addMember(req: Request, res: Response) {
     `;
 
     await runQuery(membersQuery, insertMemberValues);
+    memberInd++;
 
-    const idResult = await runQuery("SELECT LAST_INSERT_ID() AS inserted_id;");
+    idResult = await runQuery("SELECT LAST_INSERT_ID() AS inserted_id;");
 
     const membersDataQuery: string = `
     INSERT INTO members_data
@@ -109,14 +141,23 @@ export async function addMember(req: Request, res: Response) {
 
     res.json({ message: "the member has been added!" });
   } catch (error) {
+    if (memberInd === 1) {
+      console.log("heheh");
+      await runQuery(
+        "DELETE FROM members where id = ?",
+        idResult[0].inserted_id
+      );
+    }
     console.log(error);
-    res.status(500).json({ error });
+    res.status(500).json({
+      message: "error in adding the member. check the inputs and try again",
+    });
   }
 }
 
 export async function updateMember(req: Request, res: Response) {
   try {
-    const {
+    let {
       id_official,
       name,
       phone_number,
@@ -124,7 +165,29 @@ export async function updateMember(req: Request, res: Response) {
       address_city,
       address_street,
       address_house_num,
+      first_vaccination_date,
+      second_vaccination_date,
+      third_vaccination_date,
+      forth_vaccination_date,
+      vaccine_manufacturer,
+      positive_test_date,
+      recovery_date,
     } = req.body;
+
+    !first_vaccination_date
+      ? (first_vaccination_date = null)
+      : first_vaccination_date;
+    !second_vaccination_date
+      ? (second_vaccination_date = null)
+      : second_vaccination_date;
+    !third_vaccination_date
+      ? (third_vaccination_date = null)
+      : third_vaccination_date;
+    !forth_vaccination_date
+      ? (forth_vaccination_date = null)
+      : forth_vaccination_date;
+    !positive_test_date ? (positive_test_date = null) : positive_test_date;
+    !recovery_date ? (recovery_date = null) : recovery_date;
 
     const query: string = `
     UPDATE members
@@ -151,6 +214,32 @@ export async function updateMember(req: Request, res: Response) {
     ];
 
     await runQuery(query, memberToUpdate);
+
+    const membersDateQuery = `
+    UPDATE members_data
+    SET
+    first_vaccination_date = ?,
+    second_vaccination_date = ?,
+    third_vaccination_date = ?,
+    forth_vaccination_date = ?,
+    vaccine_manufactorer = ?,
+    positive_test_date = ?,
+    recovery_date = ?
+    WHERE id_member = (SELECT id from members where id_official = ?);
+    `;
+
+    const memberDataToUpdate = [
+      first_vaccination_date,
+      second_vaccination_date,
+      third_vaccination_date,
+      forth_vaccination_date,
+      vaccine_manufacturer,
+      positive_test_date,
+      recovery_date,
+      id_official,
+    ];
+
+    await runQuery(membersDateQuery, memberDataToUpdate);
 
     res.json({ message: "member deleted!" });
   } catch (error) {

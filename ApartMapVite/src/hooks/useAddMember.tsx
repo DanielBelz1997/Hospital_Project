@@ -11,8 +11,9 @@ export const useAddMember = () => {
       queryClient.invalidateQueries({ queryKey: ["membersDetalis"] });
       toast.success("added!");
     },
-    onError() {
-      toast.error("error in deleting the member");
+    onError(res) {
+      console.log(res);
+      toast.error(res.response.data.message);
     },
   });
 };

@@ -77,7 +77,7 @@ export function TableSelection({ members }) {
         <Table.Td>{item.cellphone}</Table.Td>
         <Table.Td>{fullAddress}</Table.Td>
         <Table.Td>{formattedDateOfBirth}</Table.Td>
-        {/* Display delete, edit, and view details icons under the "Actions" column */}
+
         <Table.Td>
           <MdInfo
             size={20}
@@ -141,11 +141,13 @@ export function TableSelection({ members }) {
         >
           {selectedMember &&
             Object.entries(selectedMember).map(([key, value]) => (
-              <Text style={{ textAlign: "center" }} key={key}>{`${key}:   ${
-                key.includes("date")
-                  ? new Date(value).toLocaleDateString()
-                  : value
-              }`}</Text>
+              <Text style={{ textAlign: "center" }} key={key}>
+                {`${key}:   ${
+                  key.includes("date")
+                    ? new Date(value).toLocaleDateString()
+                    : value
+                }`}
+              </Text>
             ))}
         </Modal>
       )}

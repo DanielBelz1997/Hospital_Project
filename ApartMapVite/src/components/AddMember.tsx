@@ -95,21 +95,21 @@ export function AddMember() {
         <input
           placeholder="first vaccination date"
           type="datetime-local"
-          {...register("first_vaccination_date", { required: true })}
+          {...register("first_vaccination_date")}
           style={{ marginBottom: "4vh" }}
         />
         <p>2nd Vaccination date</p>
         <input
           placeholder="second vaccination date"
           type="datetime-local"
-          {...register("second_vaccination_date", { required: true })}
+          {...register("second_vaccination_date")}
           style={{ marginBottom: "4vh" }}
         />
         <p>3rd Vaccination date</p>
         <input
           placeholder="third vaccination date"
           type="datetime-local"
-          {...register("third_vaccination_date", { required: true })}
+          {...register("third_vaccination_date")}
           style={{ marginBottom: "6vh" }}
         />
         <p></p>
@@ -117,13 +117,13 @@ export function AddMember() {
         <input
           placeholder="forth vaccination date"
           type="datetime-local"
-          {...register("forth_vaccination_date", { required: true })}
+          {...register("forth_vaccination_date")}
           style={{ marginBottom: "4vh" }}
         />
         <input
           placeholder="Vaccine manufacturer"
           type="text"
-          {...register("vaccine_manufacturer", { required: true })}
+          {...register("vaccine_manufacturer")}
           style={{ marginBottom: "4vh" }}
         />
         <p>Positive test date</p>

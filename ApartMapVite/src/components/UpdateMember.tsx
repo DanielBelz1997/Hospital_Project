@@ -68,6 +68,7 @@ export function UpdateMember({ selectedMember }) {
           type="text"
           defaultValue={selectedMember.cellphone}
           {...register("cellphone", { required: true })}
+          
           style={{ marginBottom: "4vh" }}
         />
         <input
@@ -91,7 +92,7 @@ export function UpdateMember({ selectedMember }) {
           {...register("address_house_num", { required: true })}
           style={{ marginBottom: "2vh" }}
         />
-        {selectedMember.first_vaccination_date && (
+        {!selectedMember.first_vaccination_date && (
           <>
             <p>1st Vaccination date</p>
             <input
@@ -102,7 +103,7 @@ export function UpdateMember({ selectedMember }) {
             />
           </>
         )}
-        {selectedMember.second_vaccination_date && (
+        {!selectedMember.second_vaccination_date && (
           <>
             <p>2nd Vaccination date</p>
             <input
@@ -113,7 +114,7 @@ export function UpdateMember({ selectedMember }) {
             />
           </>
         )}
-        {selectedMember.third_vaccination_date && (
+        {!selectedMember.third_vaccination_date && (
           <>
             <p>3rd Vaccination date</p>
             <input
@@ -124,7 +125,7 @@ export function UpdateMember({ selectedMember }) {
             />
           </>
         )}
-        {selectedMember.forth_vaccination_date && (
+        {!selectedMember.forth_vaccination_date && (
           <>
             <p>4th Vaccination date</p>
             <input
