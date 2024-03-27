@@ -68,7 +68,6 @@ export function UpdateMember({ selectedMember }) {
           type="text"
           defaultValue={selectedMember.cellphone}
           {...register("cellphone", { required: true })}
-          
           style={{ marginBottom: "4vh" }}
         />
         <input
@@ -98,7 +97,7 @@ export function UpdateMember({ selectedMember }) {
             <input
               placeholder="first vaccination date"
               type="datetime-local"
-              {...register("first_vaccination_date", { required: true })}
+              {...register("first_vaccination_date")}
               style={{ marginBottom: "2vh" }}
             />
           </>
@@ -109,7 +108,7 @@ export function UpdateMember({ selectedMember }) {
             <input
               placeholder="second vaccination date"
               type="datetime-local"
-              {...register("second_vaccination_date", { required: true })}
+              {...register("second_vaccination_date")}
               style={{ marginBottom: "2vh" }}
             />
           </>
@@ -120,7 +119,7 @@ export function UpdateMember({ selectedMember }) {
             <input
               placeholder="third vaccination date"
               type="datetime-local"
-              {...register("third_vaccination_date", { required: true })}
+              {...register("third_vaccination_date")}
               style={{ marginBottom: "2vh" }}
             />
           </>
@@ -131,7 +130,7 @@ export function UpdateMember({ selectedMember }) {
             <input
               placeholder="forth vaccination date"
               type="datetime-local"
-              {...register("forth_vaccination_date", { required: true })}
+              {...register("forth_vaccination_date")}
               style={{ marginBottom: "2vh" }}
             />
           </>
@@ -139,8 +138,8 @@ export function UpdateMember({ selectedMember }) {
         <input
           placeholder="Vaccine manufacturer"
           type="text"
-          defaultValue={selectedMember.vaccine_manufacturer}
-          {...register("vaccine_manufacturer", { required: true })}
+          defaultValue={selectedMember.vaccine_manufactorer}
+          {...register("vaccine_manufacturer")}
           style={{ marginBottom: "2vh" }}
         />
         <p>Positive test date</p>
@@ -151,7 +150,7 @@ export function UpdateMember({ selectedMember }) {
           {...register("positive_test_date")}
           style={{ marginBottom: "2vh" }}
         />
-        {selectedMember.recovery_date && (
+        {!selectedMember.recovery_date && (
           <>
             <p>Recovery date</p>
             <input

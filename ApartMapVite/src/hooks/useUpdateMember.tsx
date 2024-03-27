@@ -11,8 +11,8 @@ export const useUpdateMember = () => {
       queryClient.invalidateQueries({ queryKey: ["membersDetalis"] });
       toast.success("updated!");
     },
-    onError() {
-      toast.error("error in updating the member");
+    onError(res) {
+      toast.error(res.response.data.message);
     },
   });
 };

@@ -186,6 +186,38 @@ export async function updateMember(req: Request, res: Response) {
     !positive_test_date ? (positive_test_date = null) : positive_test_date;
     !recovery_date ? (recovery_date = null) : recovery_date;
 
+    if (
+      (second_vaccination_date &&
+        first_vaccination_date &&
+        new Date(first_vaccination_date) !== new Date(0) &&
+        new Date(second_vaccination_date) !== new Date(0) &&
+        new Date(second_vaccination_date) < new Date(first_vaccination_date)) ||
+      (third_vaccination_date &&
+        second_vaccination_date &&
+        new Date(third_vaccination_date) !== new Date(0) &&
+        new Date(second_vaccination_date) !== new Date(0) &&
+        new Date(third_vaccination_date) < new Date(second_vaccination_date)) ||
+      (forth_vaccination_date &&
+        third_vaccination_date &&
+        new Date(forth_vaccination_date) !== new Date(0) &&
+        new Date(third_vaccination_date) !== new Date(0) &&
+        new Date(forth_vaccination_date) < new Date(third_vaccination_date)) ||
+      (recovery_date && !positive_test_date) ||
+      (vaccine_manufacturer &&
+        !first_vaccination_date &&
+        new Date(first_vaccination_date) !== new Date(0)) ||
+      (!vaccine_manufacturer && first_vaccination_date) ||
+      (forth_vaccination_date &&
+        (!third_vaccination_date ||
+          !second_vaccination_date ||
+          !first_vaccination_date)) ||
+      (third_vaccination_date &&
+        (!second_vaccination_date || !first_vaccination_date)) ||
+      (second_vaccination_date && !first_vaccination_date)
+    ) {
+      return res.status(418).json({ message: "logic error" });
+    }
+
     const query: string = `
     UPDATE members
     SET
