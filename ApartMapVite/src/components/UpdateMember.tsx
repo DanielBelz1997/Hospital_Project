@@ -1,6 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useUpdateMember } from "../hooks/useUpdateMember";
 import { ToastContainer } from "react-toastify";
+import { parse, format } from "date-fns";
 
 type Inputs = {
   id_official: string;
@@ -29,6 +30,14 @@ export function UpdateMember({ selectedMember }) {
   const onSubmit: SubmitHandler<Inputs> = async (memberData) => {
     console.log(memberData);
     updateMemberMutation.mutate(memberData);
+  };
+
+  const ifDateExists = (dateVal) => {
+    if (dateVal) {
+      return format(dateVal, "yyyy-dd-MM");
+    } else {
+      return "";
+    }
   };
 
   return (
@@ -91,50 +100,44 @@ export function UpdateMember({ selectedMember }) {
           {...register("address_house_num", { required: true })}
           style={{ marginBottom: "2vh" }}
         />
-        {!selectedMember.first_vaccination_date && (
-          <>
-            <p>1st Vaccination date</p>
-            <input
-              placeholder="first vaccination date"
-              type="datetime-local"
-              {...register("first_vaccination_date")}
-              style={{ marginBottom: "2vh" }}
-            />
-          </>
-        )}
-        {!selectedMember.second_vaccination_date && (
-          <>
-            <p>2nd Vaccination date</p>
-            <input
-              placeholder="second vaccination date"
-              type="datetime-local"
-              {...register("second_vaccination_date")}
-              style={{ marginBottom: "2vh" }}
-            />
-          </>
-        )}
-        {!selectedMember.third_vaccination_date && (
-          <>
-            <p>3rd Vaccination date</p>
-            <input
-              placeholder="third vaccination date"
-              type="datetime-local"
-              {...register("third_vaccination_date")}
-              style={{ marginBottom: "2vh" }}
-            />
-          </>
-        )}
-        {!selectedMember.forth_vaccination_date && (
-          <>
-            <p>4th Vaccination date</p>
-            <input
-              placeholder="forth vaccination date"
-              type="datetime-local"
-              {...register("forth_vaccination_date")}
-              style={{ marginBottom: "2vh" }}
-            />
-          </>
-        )}
+        <p>1st Vaccination date</p>
+        <input
+          placeholder="first vaccination date"
+          type="date"
+          defaultValue={ifDateExists(selectedMember.first_vaccination_date)}
+          {...register("first_vaccination_date")}
+          style={{ marginBottom: "2vh" }}
+        />
+        <>
+          <p>2nd Vaccination date</p>
+          <input
+            placeholder="second vaccination date"
+            type="date"
+            defaultValue={ifDateExists(selectedMember.second_vaccination_date)}
+            {...register("second_vaccination_date")}
+            style={{ marginBottom: "2vh" }}
+          />
+        </>
+        <>
+          <p>3rd Vaccination date</p>
+          <input
+            placeholder="third vaccination date"
+            type="date"
+            defaultValue={ifDateExists(selectedMember.third_vaccination_date)}
+            {...register("third_vaccination_date")}
+            style={{ marginBottom: "2vh" }}
+          />
+        </>
+        <>
+          <p>4th Vaccination date</p>
+          <input
+            placeholder="forth vaccination date"
+            type="date"
+            defaultValue={ifDateExists(selectedMember.forth_vaccination_date)}
+            {...register("forth_vaccination_date")}
+            style={{ marginBottom: "2vh" }}
+          />
+        </>
         <input
           placeholder="Vaccine manufacturer"
           type="text"
@@ -150,17 +153,15 @@ export function UpdateMember({ selectedMember }) {
           {...register("positive_test_date")}
           style={{ marginBottom: "2vh" }}
         />
-        {!selectedMember.recovery_date && (
-          <>
-            <p>Recovery date</p>
-            <input
-              placeholder="Recovery date"
-              type="datetime-local"
-              {...register("recovery_date")}
-              style={{ marginBottom: "2vh" }}
-            />
-          </>
-        )}
+        <p>Recovery date</p>
+        <input
+          placeholder="Recovery date"
+          type="date"
+          defaultValue={selectedMember.positive_test_date}
+          {...register("recovery_date")}
+          style={{ marginBottom: "2vh" }}
+        />
+        855440048745855+++. 1
         <input
           type="submit"
           value="Update"
