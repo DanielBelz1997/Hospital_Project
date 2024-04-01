@@ -32,7 +32,7 @@ export function UpdateMember({ selectedMember }) {
     updateMemberMutation.mutate(memberData);
   };
 
-  const ifDateExists = (dateVal) => {
+  const ifDateExists = (dateVal: string) => {
     if (dateVal) {
       return format(dateVal, "yyyy-dd-MM");
     } else {
@@ -161,7 +161,6 @@ export function UpdateMember({ selectedMember }) {
           {...register("recovery_date")}
           style={{ marginBottom: "2vh" }}
         />
-        855440048745855+++. 1
         <input
           type="submit"
           value="Update"
